@@ -23,6 +23,10 @@ jobs:
         run: pipx install pipenv
       - name: "🧰 Install dependencies"
         run: pipenv install --deploy
+
+      - name: "🔑 Store SSH key"
+        run: |
+          echo -e "${{ secrets.GIT_SSH_KEY }}" > ~/.ssh/id_ed25519
       - name: "🔑 Store config"
         run: |
           echo -e "
