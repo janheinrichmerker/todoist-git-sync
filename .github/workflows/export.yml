@@ -25,6 +25,7 @@ jobs:
         run: pipenv install --deploy
       - name: "🔑 Store host key"
         run: |
+          mkdir -p ~/.ssh
           ssh-keyscan ${{ secrets.GIT_SSH_HOST }} >> ~/.ssh/known_hosts
       - name: "🔑 Store SSH key"
         run: |
