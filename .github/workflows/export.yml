@@ -2,7 +2,7 @@ name: Export roadmap
 
 on:
   schedule:
-    - cron: "00 16 * * *"
+    - cron: "0 0,4,8,12,16,20 * * *" # every 4 hours
   workflow_dispatch:
 
 
