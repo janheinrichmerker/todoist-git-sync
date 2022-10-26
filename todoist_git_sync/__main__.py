@@ -172,13 +172,15 @@ def sync(
             file.write(
                 f"Tasks automatically exported from "
                 f"Todoist project [{project.name}]({project.url}).\n\n"
+                f"Jump to [future tasks](#future-tasks) "
+                f"or to the [backlog](#backlog).\n\n"
             )
-            file.write("<details>\n<summary>Show completed tasks</summary>\n")
+            file.write("<details>\n<summary>Show completed tasks</summary>\n\n")
             file.write("## Completed tasks\n\n")
             for task in completed_tasks:
                 file.write(task.to_markdown())
-            file.write("</details>\n")
             file.write("\n")
+            file.write("</details>\n\n")
             file.write("## Overdue tasks\n\n")
             for week, overdue_tasks in overdue_week_tasks.items():
                 week_date = overdue_tasks[0].due_at
