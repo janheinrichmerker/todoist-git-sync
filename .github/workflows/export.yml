@@ -1,0 +1,38 @@
+name: Export roadmap
+
+on:
+  schedule:
+    - cron: "00 16 * * *"
+  workflow_dispatch:
+
+
+jobs:
+  export:
+    name: "Export roadmap"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "📥 Check-out"
+        uses: actions/checkout@v2
+      - name: "🧰 Install Python"
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+      - name: "🧰 Install pipx"
+        run: pip install --user pipx
+      - name: "🧰 Install Pipenv"
+        run: pipx install pipenv
+      - name: "🧰 Install dependencies"
+        run: pipenv install --deploy
+      - name: "🔑 Store config"
+        run: |
+          echo -e "
+          gitRepositoryUrl: \"${{ secrets.GIT_REPOSITORY_URL }}\"
+          gitName: \"${{ secrets.GIT_NAME }}\"
+          gitEmail: \"${{ secrets.GIT_EMAIL }}\"
+          todoistToken: \"${{ secrets.TODOIST_TOKEN }}\"
+          todoistProjectId: \"${{ secrets.TODOIST_PROJECT_ID }}\"
+          exportPath: \"roadmap.md\"
+          commitMessage: \"Update roadmap\"
+          " > config.yaml
+      - name: "🧾 Export roadmap"
+        run: pipenv run python -m todoist_git_sync
