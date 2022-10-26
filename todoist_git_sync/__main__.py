@@ -175,8 +175,8 @@ def sync(
                 f"Jump to [future tasks](#future-tasks) "
                 f"or to the [backlog](#backlog).\n\n"
             )
-            file.write("<details>\n<summary>Show completed tasks</summary>\n\n")
             file.write("## Completed tasks\n\n")
+            file.write("<details>\n<summary>Show completed tasks</summary>\n\n")
             for task in completed_tasks:
                 file.write(task.to_markdown())
             file.write("\n")
