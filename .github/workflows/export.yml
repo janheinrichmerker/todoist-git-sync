@@ -23,7 +23,9 @@ jobs:
         run: pipx install pipenv
       - name: "🧰 Install dependencies"
         run: pipenv install --deploy
-
+      - name: "🔑 Store host key"
+        run: |
+          ssh-keyscan ${{ secrets.GIT_SSH_HOST }} >> ~/.ssh/known_hosts
       - name: "🔑 Store SSH key"
         run: |
           mkdir -p ~/.ssh
