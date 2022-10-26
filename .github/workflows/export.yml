@@ -26,6 +26,7 @@ jobs:
 
       - name: "🔑 Store SSH key"
         run: |
+          mkdir -p ~/.ssh
           echo -e "${{ secrets.GIT_SSH_KEY }}" > ~/.ssh/id_ed25519
       - name: "🔑 Store config"
         run: |
