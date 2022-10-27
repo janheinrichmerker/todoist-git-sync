@@ -4,6 +4,7 @@ from itertools import groupby
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from textwrap import indent
+from time import sleep
 from typing import Optional
 
 from git import Repo, PushInfo
@@ -132,6 +133,7 @@ def sync(
                 if e.response.status_code != 404:
                     raise e
                 continue
+            sleep(0.5)
             completed_tasks.append(
                 TaskInfo.from_task(
                     task
