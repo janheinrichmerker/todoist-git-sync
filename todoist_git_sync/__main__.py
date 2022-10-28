@@ -16,10 +16,10 @@ from yaml import safe_load
 
 from todoist_git_sync.model import TaskInfo
 
-CONFIG_FILE = Path(__file__).parent.parent / "config.yaml"
+_CONFIG_FILE = Path(__file__).parent.parent / "config.yaml"
 
 
-def sync(
+def _sync(
         todoist_token: str,
         todoist_project_id: str,
         git_repository_url: str,
@@ -174,6 +174,7 @@ def sync(
                 file.write(task.to_markdown_ref())
 
         if not git_repository.is_dirty(untracked_files=True):
+            # Nothing has changed.
             return
 
         git_repository.index.add([
@@ -185,7 +186,7 @@ def sync(
 
 
 def main() -> None:
-    with CONFIG_FILE.open("r") as file:
+    with _CONFIG_FILE.open("r") as file:
         config = safe_load(file)
     todoist_token = config["todoistToken"]
     todoist_project_id = config["todoistProjectId"]
@@ -194,7 +195,7 @@ def main() -> None:
     git_email = config["gitEmail"]
     export_path = config["exportPath"]
     commit_message = config["commitMessage"]
-    sync(
+    _sync(
         todoist_token,
         todoist_project_id,
         git_repository_url,

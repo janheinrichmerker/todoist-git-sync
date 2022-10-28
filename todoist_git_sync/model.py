@@ -44,21 +44,20 @@ class TaskInfo:
 
     def to_markdown(self) -> str:
         completed = "x" if self.is_completed else " "
-        description = (
-            f"  \n{indent(self.description, '    ')}"
-            if self.description is not None else ""
-        )
+        description: str
+        if self.description is not None:
+            description = self.description
+            description = description.replace("\n\n", "  \n")
+            description = indent(description, "    ")
+            description = f"  \n{description}"
+        else:
+            description = ""
         priority = (
             " ❗" if self.priority >= 4 else
             " ❕" if self.priority >= 2 else
             ""
         )
-        completed_at = ""
-        # completed_at = (
-        #     f" (completed {self.completed_at.strftime('%Y/%m/%d')})"
-        #     if self.completed_at is not None else ""
-        # )
-        return f"- [{completed}] {self.title}{priority}{completed_at} " \
+        return f"- [{completed}] {self.title}{priority} " \
                f"[🔗][{self.id}]{description}\n"
 
     def to_markdown_ref(self) -> str:
