@@ -1,18 +1,16 @@
-from dataclasses import dataclass
 from datetime import datetime, timedelta
 from itertools import groupby
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from textwrap import indent
 from time import sleep
-from typing import Optional
 
 from git import Repo, PushInfo
-from requests import post
+from requests import Session
+from requests.adapters import HTTPAdapter
 from requests.exceptions import HTTPError
 from todoist_api_python.api import TodoistAPI
-from todoist_api_python.models import Task
 from tqdm import tqdm
+from urllib3 import Retry
 from yaml import safe_load
 
 from todoist_git_sync.model import TaskInfo
@@ -30,6 +28,16 @@ def sync(
         export_path: str,
         commit_message: str,
 ) -> None:
+    session = Session()
+    retries = Retry(
+        total=10,
+        backoff_factor=1,
+        status_forcelist=[502, 503, 504],
+    )
+    # noinspection HttpUrlsUsage
+    session.mount("http://", HTTPAdapter(max_retries=retries))
+    session.mount("https://", HTTPAdapter(max_retries=retries))
+
     with TemporaryDirectory() as temp_dir:
         git_repository_path = Path(temp_dir)
         git_repository = Repo.clone_from(
@@ -43,7 +51,7 @@ def sync(
 
         git_export_path = git_repository_path / export_path
 
-        todoist_api = TodoistAPI(todoist_token)
+        todoist_api = TodoistAPI(todoist_token, session)
 
         project = todoist_api.get_project(todoist_project_id)
         open_tasks = [
@@ -51,7 +59,7 @@ def sync(
             for task in todoist_api.get_tasks(project_id=todoist_project_id)
         ]
 
-        completed_tasks_legacy = post(
+        completed_tasks_legacy = session.post(
             "https://api.todoist.com/sync/v9/completed/get_all",
             headers={"Authorization": f"Bearer {todoist_token}"},
             data={
@@ -77,7 +85,8 @@ def sync(
                 if e.response.status_code != 404:
                     raise e
                 continue
-            sleep(0.5)
+            # Throttle requests.
+            sleep(1 / MAX_REQUESTS_PER_SECOND)
             completed_tasks.append(
                 TaskInfo.from_task(
                     task
@@ -122,7 +131,8 @@ def sync(
                 f"or to the [backlog](#backlog).\n\n"
             )
             file.write("## Completed tasks\n\n")
-            file.write("<details>\n<summary>Show completed tasks</summary>\n\n")
+            file.write(
+                "<details>\n<summary>Show completed tasks</summary>\n\n")
             for task in completed_tasks:
                 file.write(task.to_markdown())
             file.write("\n")
