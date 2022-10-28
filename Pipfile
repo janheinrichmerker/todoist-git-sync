@@ -9,6 +9,8 @@ gitpython = "*"
 pyyaml = "*"
 requests = "*"
 tqdm = "*"
+ratelimit = "*"
+urllib3 = "*"
 
 [dev-packages]
 

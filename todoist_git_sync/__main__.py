@@ -2,9 +2,10 @@ from datetime import datetime, timedelta
 from itertools import groupby
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from time import sleep
+from typing import Optional
 
 from git import Repo, PushInfo
+from ratelimit import rate_limited, sleep_and_retry
 from requests import Session
 from requests.adapters import HTTPAdapter
 from requests.exceptions import HTTPError
@@ -16,7 +17,6 @@ from yaml import safe_load
 from todoist_git_sync.model import TaskInfo
 
 CONFIG_FILE = Path(__file__).parent.parent / "config.yaml"
-MAX_REQUESTS_PER_SECOND = 3
 
 
 def sync(
@@ -77,21 +77,25 @@ def sync(
             desc="Load completed tasks",
             unit="task",
         )
-        completed_tasks = []
-        for task_legacy in completed_tasks_legacy:
+
+        @sleep_and_retry
+        @rate_limited(calls=15, period=10)
+        def get_task_info(task_id: str) -> Optional[TaskInfo]:
             try:
-                task = todoist_api.get_task(task_legacy["task_id"])
+                task = todoist_api.get_task(task_id)
             except HTTPError as e:
                 if e.response.status_code != 404:
                     raise e
-                continue
-            # Throttle requests.
-            sleep(1 / MAX_REQUESTS_PER_SECOND)
-            completed_tasks.append(
-                TaskInfo.from_task(
-                    task
-                )
-            )
+                return None
+            return TaskInfo.from_task(task)
+
+        completed_tasks = (
+            get_task_info(task_legacy["task_id"])
+            for task_legacy in completed_tasks_legacy
+        )
+        completed_tasks = [
+            task for task in completed_tasks if task is not None
+        ]
 
         backlog_tasks = [
             task
