@@ -107,23 +107,30 @@ def _sync(
             for task in open_tasks
             if task.due_at is not None
         ]
-        scheduled_week_tasks = {
+        now = datetime.now()
+        future_tasks = [
+            task
+            for task in scheduled_tasks
+            if task.due_at > now
+        ]
+        overdue_tasks = [
+            task
+            for task in scheduled_tasks
+            if task.due_at <= now
+        ]
+        future_week_tasks = {
             week: list(tasks)
             for week, tasks in groupby(
-                scheduled_tasks,
+                future_tasks,
                 key=lambda task: int(task.due_at.strftime("%W"))
             )
         }
-        current_week = int(datetime.now().strftime("%W"))
-        future_week_tasks = {
-            week: tasks
-            for week, tasks in scheduled_week_tasks.items()
-            if week >= current_week
-        }
         overdue_week_tasks = {
-            week: tasks
-            for week, tasks in scheduled_week_tasks.items()
-            if week < current_week
+            week: list(tasks)
+            for week, tasks in groupby(
+                overdue_tasks,
+                key=lambda task: int(task.due_at.strftime("%W"))
+            )
         }
 
         with git_export_path.open("w") as file:
