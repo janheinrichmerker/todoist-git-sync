@@ -64,6 +64,7 @@ def _sync(
             headers={"Authorization": f"Bearer {todoist_token}"},
             data={
                 "project_id": todoist_project_id,
+                "limit": 200,
             }
         ).json()["items"]
         completed_tasks_legacy = sorted(
