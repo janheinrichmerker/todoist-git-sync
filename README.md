@@ -1,4 +1,4 @@
-[![CI](https://img.shields.io/github/workflow/status/heinrichreimer/todoist-git-sync/Export%20roadmap?label=export&style=flat-square)](https://github.com/heinrichreimer/todoist-git-sync/actions/workflows/export.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/heinrichreimer/todoist-git-sync/export.yml?branch=main&label=export&style=flat-square)](https://github.com/heinrichreimer/todoist-git-sync/actions/workflows/export.yml)
 [![Issues](https://img.shields.io/github/issues/heinrichreimer/todoist-git-sync?style=flat-square)](https://github.com/heinrichreimer/todoist-git-sync/issues)
 [![Commit activity](https://img.shields.io/github/commit-activity/m/heinrichreimer/todoist-git-sync?style=flat-square)](https://github.com/heinrichreimer/todoist-git-sync/commits)
 [![License](https://img.shields.io/github/license/heinrichreimer/todoist-git-sync?style=flat-square)](LICENSE)
