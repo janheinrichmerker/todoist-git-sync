@@ -44,4 +44,6 @@ jobs:
           commitMessage: \"Update roadmap\"
           " > config.yaml
       - name: "🧾 Export roadmap"
+        env:
+          GIT_CLONE_PROTECTION_ACTIVE: false
         run: pipenv run python -m todoist_git_sync
