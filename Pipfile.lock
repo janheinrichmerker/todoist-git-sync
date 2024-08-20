@@ -239,12 +239,12 @@
         },
         "todoist-api-python": {
             "hashes": [
-                "sha256:05b4193923d1befb59f2c5e2dc70c7e4b8746dec9fe406a323c5619f3c5b6ac4",
-                "sha256:d8ada7e4d2776b5b41c30927e3f20316d1ea648ed77e7c5b50910a6766e0c016"
+                "sha256:278bfe851b9bd19bde5ff5de09d813d671ef7310ba55e1962131fca5b59bb735",
+                "sha256:84934a19ccd83fb61010a8126362a5d7d6486c92454c111307ba55bc74903f5c"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9' and python_version < '4.0'",
-            "version": "==2.1.6"
+            "version": "==2.1.7"
         },
         "tqdm": {
             "hashes": [
