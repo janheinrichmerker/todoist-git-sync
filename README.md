@@ -1,7 +1,7 @@
-[![CI](https://img.shields.io/github/actions/workflow/status/heinrichreimer/todoist-git-sync/export.yml?branch=main&label=export&style=flat-square)](https://github.com/heinrichreimer/todoist-git-sync/actions/workflows/export.yml)
-[![Issues](https://img.shields.io/github/issues/heinrichreimer/todoist-git-sync?style=flat-square)](https://github.com/heinrichreimer/todoist-git-sync/issues)
-[![Commit activity](https://img.shields.io/github/commit-activity/m/heinrichreimer/todoist-git-sync?style=flat-square)](https://github.com/heinrichreimer/todoist-git-sync/commits)
-[![License](https://img.shields.io/github/license/heinrichreimer/todoist-git-sync?style=flat-square)](LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/janheinrichmerker/todoist-git-sync/export.yml?branch=main&label=export&style=flat-square)](https://github.com/janheinrichmerker/todoist-git-sync/actions/workflows/export.yml)
+[![Issues](https://img.shields.io/github/issues/janheinrichmerker/todoist-git-sync?style=flat-square)](https://github.com/janheinrichmerker/todoist-git-sync/issues)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/janheinrichmerker/todoist-git-sync?style=flat-square)](https://github.com/janheinrichmerker/todoist-git-sync/commits)
+[![License](https://img.shields.io/github/license/janheinrichmerker/todoist-git-sync?style=flat-square)](LICENSE)
 
 # ✅ todoist-git-sync
 
